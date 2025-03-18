@@ -11,7 +11,8 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ message: "Errore nel parsing del corpo dell'evento" }) };
   }
 
-  const message = body.message;
+  // Verifica se è un messaggio o un messaggio modificato
+  const message = body.message || body.edited_message;
 
   // Verifica che il messaggio e il campo chat esistano
   if (!message || !message.chat) {
