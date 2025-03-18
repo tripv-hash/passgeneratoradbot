@@ -16,5 +16,9 @@
     "url": "https://github.com/tripv-hash/passgeneratoradbot/issues"
   },
   "homepage": "https://github.com/tripv-hash/passgeneratoradbot#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@netlify/functions": "^3.0.2",
+    "axios": "^1.8.3"
+  }
 }
