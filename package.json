@@ -1,0 +1,20 @@
+{
+  "name": "passgeneratoradbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tripv-hash/passgeneratoradbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tripv-hash/passgeneratoradbot/issues"
+  },
+  "homepage": "https://github.com/tripv-hash/passgeneratoradbot#readme",
+  "description": ""
+}
