@@ -36,9 +36,50 @@ exports.handler = async (event) => {
     `;
 
     try {
-      // Invia il messaggio di benvenuto al chat
+      // Invia il messaggio di benvenuto alla chat
       const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`;
       await axios.post(url, {
         chat_id: chatId,
         text: welcomeMessage,
       });
+    } catch (error) {
+      console.error("Errore nell'invio del messaggio di benvenuto:", error);
+    }
+  }
+
+  // Comando per generare la password
+  if (message.text && message.text.toLowerCase().startsWith("/generatepwd")) {
+    const length = parseInt(message.text.split(" ")[1]) || 12;
+    const password = generatePassword(length);
+
+    try {
+      const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`;
+      await axios.post(url, {
+        chat_id: chatId,
+        text: `🔐 Ecco la tua password:\n\`${password}\`\n\nTocca il pulsante qui sotto per copiarla facilmente!`,
+        parse_mode: "MarkdownV2",
+        reply_markup: {
+          inline_keyboard: [[
+            { text: "📋 Copia Password", switch_inline_query: password }
+          ]]
+        }
+      });
+    } catch (error) {
+      console.error("Errore nell'invio della password:", error);
+    }
+
+    return { statusCode: 200, body: JSON.stringify({ message: "Password inviata" }) };
+  }
+
+  return { statusCode: 200, body: "Nessun comando valido ricevuto" };
+};
+
+// Funzione per generare una password casuale
+function generatePassword(length) {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+}
