@@ -52,15 +52,18 @@ exports.handler = async (event) => {
     const length = parseInt(message.text.split(" ")[1]) || 12;
     const password = generatePassword(length);
 
+    // Escape special characters in the password for MarkdownV2
+    const escapedPassword = escapeMarkdownV2(password);
+
     try {
       const url = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`;
       await axios.post(url, {
         chat_id: chatId,
-        text: `🔐 Ecco la tua password:\n\`${escapeMarkdown(password)}\`\n\nTocca il pulsante qui sotto per copiarla facilmente!`,
+        text: `🔐 Ecco la tua password:\n\`${escapedPassword}\`\n\nTocca il pulsante qui sotto per copiarla facilmente!`,
         parse_mode: "MarkdownV2",
         reply_markup: {
           inline_keyboard: [[
-            { text: "📋 Copia Password", switch_inline_query: password }
+            { text: "📋 Copia Password", switch_inline_query: escapedPassword }
           ]]
         }
       });
@@ -84,7 +87,7 @@ function generatePassword(length) {
   return password;
 }
 
-// Funzione per eseguire l'escape dei caratteri speciali nel MarkdownV2
-function escapeMarkdown(text) {
-  return text.replace(/([_*[\]()~`>#+=-|{}.!])/g, '\\$1');
+// Funzione per fare l'escape dei caratteri speciali in MarkdownV2
+function escapeMarkdownV2(text) {
+  return text.replace(/([\\`*_{}\[\]()#+\-.!])/g, '\\$1');
 }
